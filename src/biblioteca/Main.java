@@ -23,23 +23,25 @@ public class Main {
 			System.out.println("Conectado a la base de datos " + db.toString() + " de Matisse");
 			// Crea un objeto Autor
 			Autor a1 = new Autor(db);
-			a1.setNombre("Haruki");
-			a1.setApellidos("Murakami");
-			a1.setEdad(53);
-			System.out.println("Libro 'Baila Baila Baila' creado...");
+			a1.setNombre("Antonio");
+			a1.setApellidos("MuRo");
+			a1.setEdad(31);
+			System.out.println("Autor "+a1.getNombre()+" "+a1.getApellidos()+" creado...");
+			
 
 			// Crea un objeto Libro
 			Libro l1 = new Libro(db);
-			l1.setTitulo("Baila Baila Baila");
-			l1.setEditorial("TusQuests");
-			l1.setPaginas(512);
+			l1.setTitulo("Programación de Sistemas Informáticos");
+			l1.setEditorial("Amuro");
+			l1.setPaginas(420);
+			System.out.println("Libro "+l1.getTitulo()+" creado...");
 
 			// Crea otro objeto Libro
 			Libro l2 = new Libro(db);
-			l2.setTitulo("Tokio Blues");
-			l2.setEditorial("TusQuests");
-			l2.setPaginas(498);
-			System.out.println("Libro 'Herejía' creado...");
+			l2.setTitulo("Desarrollo de Aplicaciones Multiplataforma");
+			l2.setEditorial("Amuro");
+			l2.setPaginas(513);
+			System.out.println("Libro "+l2.getTitulo()+" creado...");
 
 			// Crea un array de Obras para guardar los libros y hacer las relaciones
 			Obra o1[] = new Obra[2];
@@ -66,9 +68,22 @@ public class Main {
 			db.startTransaction();
 			// ListatodoslosobjetosObraquehay enlabase dedatos, conel
 			// método//getInstanceNumber
-			System.out.println("\n" + Obra.getInstanceNumber(db) + " Obra(s) en la DB.");
+			if(Obra.getInstanceNumber(db)<1)
+			{
+				System.out.println("\nNo Existen Obras en la base de datos.");
+			}
+			else if (Obra.getInstanceNumber(db)<2)
+			{
+				System.out.println("\n" + Obra.getInstanceNumber(db) + " Obra en la DB.");
+			}
+			else
+			{
+				System.out.println("\n" + Obra.getInstanceNumber(db) + " Obras en la DB.");
+			}
+	
 			// BorratodaslasinstanciasdeObra
 			Obra.getClass(db).removeAllInstances();
+			
 			// materializaloscambiosy cierralaBD
 			db.commit();
 			db.close();
@@ -91,7 +106,7 @@ public class Main {
 			nAutores = (int) Autor.getInstanceNumber(db);
 			// CreaunIterador(propiodeJava)
 			MtObjectIterator<Autor> iter = Autor.<Autor>instanceIterator(db);
-			System.out.println("recorro el iterador de uno en uno y cambio cuando encuentro 'nombre'");
+			System.out.println("Recorro los autores de uno en uno y cambio la edad a "+nuevaEdad+" cuando encuentre el nombre "+nombre);
 			while (iter.hasNext()) {
 				Autor[] autores = iter.next(nAutores);
 				for (int i = 0; i < autores.length; i++) {
@@ -153,7 +168,7 @@ public class Main {
 
 		creaObjetos(hostname, dbname);
 		borrarTodos(hostname, dbname);
-		modificaObjeto(hostname, dbname, "Haruki", 29);
+		modificaObjeto(hostname, dbname, "Antonio", 29);
 		ejecutaOQL(hostname, dbname);
 	}
 
